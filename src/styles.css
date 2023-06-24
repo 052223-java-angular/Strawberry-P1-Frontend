@@ -12,6 +12,6 @@
     src: url('src/assets/nhl/NHLWASHI.TTF') format('truetype'),
 }
 
-.pop {
+.scale {
     @apply duration-300 hover:scale-110 hover:ease-out;
 }
