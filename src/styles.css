@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'archivo';
+    src: url('src/assets/archivo/beta/ArchivoVFBeta.ttf') format('truetype'),
+}
+
+@font-face {
+    font-family: 'nhl';
+    src: url('src/assets/nhl/NHLWASHI.TTF') format('truetype'),
+}
+
+.pop {
+    @apply duration-300 hover:scale-110 hover:ease-out;
+}
