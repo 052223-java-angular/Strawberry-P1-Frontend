@@ -6,9 +6,9 @@
     <div class="flex flex-col gap-20 px-40 py-20">
         <h1 class="font-bold text-4xl">{{productName.toUpperCase()}}</h1>
         <ng-container *ngIf="category && category.products && category.products.length > 0; else noProducts">
-            <div class="grid grid-cols-4 gap-3">
+            <div class="grid grid-cols-4 gap-10">
                 <ul *ngFor="let product of category.products">
-                    <li class="flex flex-col gap-3 cursor-pointer" routerLink="/product/{{product.id}}">
+                    <li class="flex flex-col gap-3 cursor-pointer scale" routerLink="/product/{{product.id}}">
                         <img [src]="product.image" alt="product image">
                         <h2 class="font-bold">{{product.name}}</h2>
                         <p class="text-xl">${{product.price}}.00</p>
