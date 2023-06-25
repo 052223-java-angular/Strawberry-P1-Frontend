@@ -21,6 +21,10 @@
     @apply duration-300 focus:scale-110 focus:ease-out;
 }
 
+.hover-underline {
+    @apply hover:underline hover:underline-offset-4
+}
+
 /* ------------------ TOASTER CSS ------------------ */
 
 /* position */

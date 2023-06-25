@@ -6,7 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth-service.service';
+import { Auth } from 'src/app/models/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,8 +15,10 @@ import { AuthService } from 'src/app/services/auth-service.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  isDropdown: boolean = false;
-  @ViewChild('dropdown') dropdown!: ElementRef;
+  userDropdown: boolean = false;
+  shopDropdown: boolean = false;
+  @ViewChild('userDropdownRef') userDropdownRef!: ElementRef;
+  @ViewChild('shopDropdownRef') shopDropdownRef!: ElementRef;
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -24,16 +27,28 @@ export class NavbarComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (
-      this.dropdown && // Add this check
-      this.isDropdown &&
-      !this.dropdown.nativeElement.contains(event.target)
+      this.userDropdownRef &&
+      this.userDropdown &&
+      !this.userDropdownRef.nativeElement.contains(event.target)
     ) {
-      this.isDropdown = false;
+      this.userDropdown = false;
+    }
+
+    if (
+      this.shopDropdownRef &&
+      this.shopDropdown &&
+      !this.shopDropdownRef.nativeElement.contains(event.target)
+    ) {
+      this.shopDropdown = false;
     }
   }
 
-  handleDropdown(): void {
-    this.isDropdown = !this.isDropdown;
+  handleUserDropdown(): void {
+    this.userDropdown = !this.userDropdown;
+  }
+
+  handleShopDropdown(): void {
+    this.shopDropdown = !this.shopDropdown;
   }
 
   isLoggedIn(): boolean {
@@ -43,5 +58,9 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     window.sessionStorage.removeItem('auth');
     this.router.navigate(['/']);
+  }
+
+  getAuth(): Auth | null {
+    return this.auth.getAuth();
   }
 }

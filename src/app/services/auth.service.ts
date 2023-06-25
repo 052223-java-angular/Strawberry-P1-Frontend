@@ -22,6 +22,14 @@ export class AuthService {
     return false;
   }
 
+  getAuth(): Auth | null {
+    const auth = sessionStorage.getItem('auth');
+    if (auth) {
+      return JSON.parse(auth);
+    }
+    return null;
+  }
+
   login(payload: LoginPayload): Observable<Auth> {
     return this.http.post<Auth>(`${this.baseUrl}/auth/login`, payload);
   }
