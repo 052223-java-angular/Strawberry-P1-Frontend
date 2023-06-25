@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +14,8 @@ import { Observable } from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
-  dropdown: boolean = false;
+  isDropdown: boolean = false;
+  @ViewChild('dropdown') dropdown!: ElementRef;
 
   constructor(private auth: AuthService) {}
 
@@ -17,6 +23,16 @@ export class NavbarComponent implements OnInit {
     if (window.sessionStorage.getItem('auth') === 'true') {
       this.isLoggedIn = true;
       console.log('true');
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if (
+      this.isDropdown &&
+      !this.dropdown.nativeElement.contains(event.target as Node)
+    ) {
+      this.isDropdown = false;
     }
   }
 
@@ -28,5 +44,9 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     window.sessionStorage.removeItem('auth');
     this.auth.logout({ logoutParams: { returnTo: document.location.origin } });
+  }
+
+  handleDropdown(): void {
+    this.isDropdown = !this.isDropdown;
   }
 }
