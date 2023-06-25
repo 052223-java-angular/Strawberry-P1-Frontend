@@ -11,8 +11,11 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail.co
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { AuthModule } from '@auth0/auth0-angular';
-import { environment } from 'src/environment/environment';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,13 +32,13 @@ import { environment } from 'src/environment/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AuthModule.forRoot({
-      domain: environment.auth.domain,
-      clientId: environment.auth.clientId,
-      authorizationParams: {
-        redirect_uri: window.location.origin,
-      },
-    }),
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+    }), // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent],
