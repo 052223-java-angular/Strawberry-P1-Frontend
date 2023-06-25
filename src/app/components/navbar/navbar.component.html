@@ -1,7 +1,16 @@
 <nav class="flex justify-between items-center shadow-xl px-40 py-10">
     <ul class="flex items-center gap-10">
         <h2 class="font-nhl font-bold text-5xl cursor-pointer" routerLink="">STRAWBERRY</h2>
-        <li class="hover:underline hover:underline-offset-4 cursor-pointer" routerLink="/products">Shop</li>
+        <div #shopDropdownRef>
+            <li class="hover:underline hover:underline-offset-4 cursor-pointer" (click)="handleShopDropdown()">Shop</li>
+            <ng-container *ngIf="shopDropdown">
+                <div class="absolute flex items-center left-0 gap-11 w-full mt-12 px-40 py-2 border border-slate-200 bg-white">
+                    <a class="hover-underline" routerLink="/products/all">Shop all</a>
+                    <a class="hover-underline" routerLink="/products/tops">Tops</a>
+                    <a class="hover-underline" routerLink="/products/bottoms">Bottoms</a>
+                </div>
+            </ng-container>
+        </div>
         <li class="hover:underline hover:underline-offset-4 cursor-pointer" routerLink="/about">About</li>
     </ul>
     <ul class="flex items-center gap-5">
@@ -9,17 +18,19 @@
             <p class="hover:underline hover:underline-offset-4 cursor-pointer" routerLink="/login">Login</p>
         </ng-container>
         <ng-container *ngIf="isLoggedIn()">
-            <div #dropdown class="flex flex-col items-end relative">
-                <svg (click)="handleDropdown()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="currentColor" class="w-8 h-8 scale cursor-pointer">
-                    <path fill-rule="evenodd"
-                        d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                        clip-rule="evenodd" />
-                </svg>
-                <ng-container *ngIf="isDropdown">
-                    <div class="absolute flex flex-col py-2 bg-slate-200 rounded-md shadow-xl mt-10 gap-2">
-                        <a routerLink="/profile" class="pl-5 pr-14 scale cursor-pointer hover:font-bold">Profile</a>
-                        <p class="pl-5 pr-14 scale cursor-pointer hover:font-bold" (click)="logout()">Logout</p>
+            <div #userDropdownRef class="relative inline-block text-left">
+                <div (click)="handleUserDropdown()" class="inline-flex justify-center w-full rounded-md px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500 cursor-pointer">
+                    <span>{{getAuth()?.username}}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5 ml-2 -mr-1">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <ng-container *ngIf="userDropdown">
+                    <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Profile</a>
+                            <p class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer" (click)="logout()" role="menuitem">Logout</p>
+                        </div>
                     </div>
                 </ng-container>
             </div>
