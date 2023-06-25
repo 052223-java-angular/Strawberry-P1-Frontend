@@ -5,7 +5,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,40 +14,34 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  isLoggedIn: boolean = false;
   isDropdown: boolean = false;
   @ViewChild('dropdown') dropdown!: ElementRef;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    if (window.sessionStorage.getItem('auth') === 'true') {
-      this.isLoggedIn = true;
-      console.log('true');
-    }
-  }
+  ngOnInit(): void {}
 
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (
+      this.dropdown && // Add this check
       this.isDropdown &&
-      !this.dropdown.nativeElement.contains(event.target as Node)
+      !this.dropdown.nativeElement.contains(event.target)
     ) {
       this.isDropdown = false;
     }
   }
 
-  login(): void {
-    this.auth.loginWithRedirect();
-    window.sessionStorage.setItem('auth', 'true');
+  handleDropdown(): void {
+    this.isDropdown = !this.isDropdown;
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.isLoggedIn();
   }
 
   logout(): void {
     window.sessionStorage.removeItem('auth');
-    this.auth.logout({ logoutParams: { returnTo: document.location.origin } });
-  }
-
-  handleDropdown(): void {
-    this.isDropdown = !this.isDropdown;
+    this.router.navigate(['/']);
   }
 }

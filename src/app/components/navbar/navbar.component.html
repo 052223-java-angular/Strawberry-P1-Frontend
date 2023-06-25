@@ -5,10 +5,10 @@
         <li class="hover:underline hover:underline-offset-4 cursor-pointer" routerLink="/about">About</li>
     </ul>
     <ul class="flex items-center gap-5">
-        <ng-container *ngIf="!isLoggedIn">
-            <p class="hover:underline hover:underline-offset-4 cursor-pointer" (click)="login()">Login</p>
+        <ng-container *ngIf="!isLoggedIn()">
+            <p class="hover:underline hover:underline-offset-4 cursor-pointer" routerLink="/login">Login</p>
         </ng-container>
-        <ng-container *ngIf="isLoggedIn">
+        <ng-container *ngIf="isLoggedIn()">
             <div #dropdown class="flex flex-col items-end relative">
                 <svg (click)="handleDropdown()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                     fill="currentColor" class="w-8 h-8 scale cursor-pointer">
@@ -17,9 +17,9 @@
                         clip-rule="evenodd" />
                 </svg>
                 <ng-container *ngIf="isDropdown">
-                    <div class="absolute flex flex-col py-2 bg-slate-200 rounded-md shadow-xl mt-10">
-                        <a routerLink="/profile" class="pl-5 pr-10 scale cursor-pointer hover:font-bold">Profile</a>
-                        <p class="pl-5 pr-10 scale cursor-pointer hover:font-bold" (click)="logout()">Logout</p>
+                    <div class="absolute flex flex-col py-2 bg-slate-200 rounded-md shadow-xl mt-10 gap-2">
+                        <a routerLink="/profile" class="pl-5 pr-14 scale cursor-pointer hover:font-bold">Profile</a>
+                        <p class="pl-5 pr-14 scale cursor-pointer hover:font-bold" (click)="logout()">Logout</p>
                     </div>
                 </ng-container>
             </div>
