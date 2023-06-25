@@ -11,6 +11,8 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail.co
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from 'src/environment/environment';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,20 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ProductDetailComponent,
     UnauthorizedComponent,
     PageNotFoundComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule.forRoot({
+      domain: environment.auth.domain,
+      clientId: environment.auth.clientId,
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
