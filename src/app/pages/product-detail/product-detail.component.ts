@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CartItemPayload } from 'src/app/models/payloads/cart-item-payload';
 import { Product } from 'src/app/models/product';
+import { AuthService } from 'src/app/services/auth.service';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -15,7 +19,10 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private auth: AuthService,
+    private cartService: CartService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -33,5 +40,22 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart(): void {}
+  addToCart(): void {
+    const payload: CartItemPayload = {
+      quantity: 1,
+      price: this.product?.price || 0,
+      productId: this.productId,
+      userId: this.auth.getAuth()?.id || '',
+    };
+
+    this.cartService.add(payload).subscribe({
+      next: (resp) => {
+        this.toastr.success('Product added to cart');
+      },
+      error: (err) => {
+        this.toastr.error('Error adding product to cart');
+        console.log(err);
+      },
+    });
+  }
 }
